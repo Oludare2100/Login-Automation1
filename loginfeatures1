@@ -1,0 +1,16 @@
+Feature: Login
+
+  @smoke
+  Scenario: Successful login
+    When I submit valid credentials
+    Then the login succeeds
+
+  @regression
+  Scenario: Login with an invalid username
+    When I submit an invalid username
+    Then the username error is shown
+
+  @regression
+  Scenario: Login with an invalid password
+    When I submit an invalid password
+    Then the password error is shown

@@ -1,0 +1,53 @@
+     
+import pytest
+from pytest_bdd import scenarios, when, then
+
+from Login_Page import LoginPage
+
+# Link the scenarios in your feature file
+scenarios("../login.feature")
+
+
+# Create the LoginPage object using Playwright's page fixture
+@pytest.fixture
+def login_page(page):
+    return LoginPage(page)
+
+
+# VALID LOGIN
+@when("I submit valid credentials")
+def submit_valid_credentials(login_page):
+    login_page.validlogin(
+        login_page.page, "student", "Password123"
+    )
+
+
+@then("the login succeeds")
+def login_succeeds(login_page):
+    login_page.verifylogin(login_page.page, "student")
+
+
+# INVALID USERNAME
+@when("I submit an invalid username")
+def submit_invalid_username(login_page):
+    login_page.invalidloginU(
+        login_page.page, "IncorrectUser", "Password123"
+    )
+
+
+@then("the username error is shown")
+def username_error_is_shown(login_page):
+    login_page.verify_invalidloginU(login_page.page)
+
+
+# INVALID PASSWORD
+@when("I submit an invalid password")
+def submit_invalid_password(login_page):
+    login_page.invalidloginPSW(
+        login_page.page, "student", "IncorrectPassword"
+    )
+
+
+@then("the password error is shown")
+def password_error_is_shown(login_page):
+    login_page.verify_invalidloginPSW(login_page.page)
